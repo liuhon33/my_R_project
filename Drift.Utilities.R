@@ -43,6 +43,7 @@ rand_inherit <- function(p, father, mother) {
 # select the 2 individuals and let them have the offspring
 gen_next <- function(gen, p = 0.5, offspring_per_pair = 2) {
   n <- nrow(gen)
+  # initialize the next generation
   next_gen <- data.frame(gene1 = character(0), gene2 = character(0))
   # the number of population is just the number of rows
   for (i in 1 : (n / 2)) {
@@ -63,5 +64,13 @@ gen_next <- function(gen, p = 0.5, offspring_per_pair = 2) {
       next_gen <- rbind(next_gen, child)
     }
   }
+  colnames(next_gen) <- c("gene1", "gene2")
+  next_gen <- next_gen[sample(nrow(next_gen)), ]
+  # this line reorders the data frame of the next generation
+  # notice that I could use sample(n), but this is under the
+  # assuption that each pair has two offspring. but my code did
+  # not assume this, so I have tu use nrow(next_gen)
+  rownames(next_gen) <- NULL
+  # this line reorders the row numbers
   return(next_gen)
 }
