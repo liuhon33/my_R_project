@@ -15,3 +15,12 @@ gen_init <- function(n){
     # gen0 is the initial generation
     return(gen0)
 }
+
+# 1b)
+rand_inherit <- function(father, mother){
+    # father/mother is a vector
+    father_allele <- sample(father, 1)
+    mother_allele <- sample(mother, 1)
+    child <- c(father_allele, mother_allele)
+    return(child)
+}
