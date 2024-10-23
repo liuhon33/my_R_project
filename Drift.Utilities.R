@@ -3,7 +3,6 @@
 # Introduction
 
 # 1a)
-n <- 100
 # gen_init is the function that initialize the function,
 # returning the first generation of the population.
 # in this population, every individual is heterouzygous with
@@ -80,8 +79,47 @@ population_fraction <- function(gen) {
   # use slicing
   # slice A1, A1
   a1a1 <- gen[(gen$gene1 == "A1") & (gen$gene2 == "A1"), ]
+  # slice A1, A2 and A2, A1
   a1a2 <- gen[(gen$gene1 == "A1") & (gen$gene2 == "A2"), ]
   a2a1 <- gen[(gen$gene1 == "A2") & (gen$gene2 == "A1"), ]
+  # slice homozygous for A2
   a2a2 <- gen[(gen$gene1 == "A2") & (gen$gene2 == "A2"), ]
   return(c(nrow(a1a1), nrow(a1a2) + nrow(a2a1), nrow(a2a2)))
 }
+
+# 1e)
+sim.many.generations <- function(n, m) {
+  # m is the number of the generations
+  # n is the population size
+  gen <- gen_init(n)
+  results <- data.frame(
+    Generation = 0,
+    A1A1 = population_fraction(gen)[1],
+    heterozygous = population_fraction(gen)[2],
+    A2A2 = population_fraction(gen)[3],
+    stringsAsFactors = FALSE
+  )
+  gen <- gen_init(n)
+  # this is the generation 0
+  for (i in 1:m) {
+    gen <- gen_next(gen)
+    fractions <- population_fraction(gen)
+    results <- rbind(
+      results,
+      data.frame(
+        Generation = i,
+        A1A1 = fractions[1],
+        heterozygous = fractions[2],
+        A2A2 = fractions[3],
+        stringsAsFactors = FALSE
+      )
+    )
+  }
+  return(results)
+}
+
+fractions <- sim.many.generations(100, 100)
+fractions2 <- sim.many.generations(20, 100)
+
+plot(0:100, fractions$heterozygous, type = "l")
+plot(0:100, fractions2$heterozygous, type = "l")
