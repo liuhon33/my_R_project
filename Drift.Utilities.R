@@ -41,21 +41,27 @@ rand_inherit <- function(p, father, mother) {
 # Note that we made an assumption: We ignored the sex
 # of these population. If we consider sex, we cannot randomly
 # select the 2 individuals and let them have the offspring
-gen_next <- function(gen, p = 0.5, offsrping_per_pair = 2) {
+gen_next <- function(gen, p = 0.5, offspring_per_pair = 2) {
   n <- nrow(gen)
   next_gen <- data.frame(gene1 = character(0), gene2 = character(0))
   # the number of population is just the number of rows
-  for (i in 1 : n / 2) {
+  for (i in 1 : (n / 2)) {
     # n is the current population
-    father <- as.vector(gen[(2i - 1), ])
-    mother <- as.vector(gen[2i, ])
+    # I use unname, unlist just to make the output a vector
+    # instead of a list or a table (input is the slicing 
+    # of a dataframe)
+    father <- unname(unlist(gen[(2 * i - 1), ]))
+    mother <- unname(unlist(gen[2 * i, ]))
 
     # generate the offspring per pair
     # even though in the lecture we only assume that 
     # each pair has 2 offsring, but I like to increase more
-    for (j in 1:offsrping_per_pair) {
+    for (j in 1:offspring_per_pair) {
       child <- rand_inherit(p, father, mother)
+      # this child is a vector
+      child <- as.list(child)
       next_gen <- rbind(next_gen, child)
     }
   }
+  return(next_gen)
 }
