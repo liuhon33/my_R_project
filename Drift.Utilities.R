@@ -17,10 +17,20 @@ gen_init <- function(n){
 }
 
 # 1b)
-rand_inherit <- function(father, mother){
+rand_inherit <- function(p, father, mother) {
     # father/mother is a vector
-    father_allele <- sample(father, 1)
-    mother_allele <- sample(mother, 1)
+
+    # check if parent is homozygous
+    inherit_allele <- function(parent, p) {
+        if (parent[1] == parent[2]) {
+            return(parent[1])
+        } else {
+            # Heterozygous: sample based on p
+            return(sample(c("A1", "A2"), size = 1, prob = c(p, 1 - p)))
+        }
+    }
+    father_allele <- inherit_allele(father, p)
+    mother_allele <- inherit_allele(mother, p)
     child <- c(father_allele, mother_allele)
     return(child)
 }
