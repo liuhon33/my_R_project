@@ -55,7 +55,7 @@ gen_next <- function(gen, p = 0.5, offspring_per_pair = 2) {
     mother <- unname(unlist(gen[2 * i, ]))
 
     # generate the offspring per pair
-    # even though in the lecture we only assume that 
+    # even though in the lecture we only assume that
     # each pair has 2 offsring, but I like to increase more
     for (j in 1:offspring_per_pair) {
       child <- rand_inherit(p, father, mother)
@@ -73,4 +73,15 @@ gen_next <- function(gen, p = 0.5, offspring_per_pair = 2) {
   rownames(next_gen) <- NULL
   # this line reorders the row numbers
   return(next_gen)
+}
+
+# 1d)
+population_fraction <- function(gen) {
+  # use slicing
+  # slice A1, A1
+  a1a1 <- gen[(gen$gene1 == "A1") & (gen$gene2 == "A1"), ]
+  a1a2 <- gen[(gen$gene1 == "A1") & (gen$gene2 == "A2"), ]
+  a2a1 <- gen[(gen$gene1 == "A2") & (gen$gene2 == "A1"), ]
+  a2a2 <- gen[(gen$gene1 == "A2") & (gen$gene2 == "A2"), ]
+  return(c(nrow(a1a1), nrow(a1a2) + nrow(a2a1), nrow(a2a2)))
 }
