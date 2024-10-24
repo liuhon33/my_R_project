@@ -6,7 +6,7 @@
 # This is the driver script. It uses the function
 # from Drift.Utilities.R
 # It accepts a user input from the command line
-# run "Rscript Drift.Analysis.R n" (n is an even number)
+# Run "Rscript Drift.Analysis.R n" (n is an even number)
 # will give us the plot of the proportion of
 # the heterozygous individuals within the population
 # as the population keeps reproducing randomly
